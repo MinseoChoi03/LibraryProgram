@@ -12,6 +12,12 @@ namespace LibraryProgram
 {
     public partial class BorrowAndReturn : Form
     {
+        public static string _server = "localhost";
+        public static int _port = 3306;
+        public static string _database = "csproject";
+        public static string _id = "mirim";
+        public static string _pw = "mirim321!";
+        public static string connect_user = "DSU324D";
         Borrow borrow_form = new Borrow();
         Return return_form = new Return();
         public BorrowAndReturn()

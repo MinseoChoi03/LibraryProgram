@@ -14,13 +14,13 @@ namespace LibraryProgram
 {
     public partial class Borrow : Form
     {
-        string _server = "localhost";
-        int _port = 3306;
-        string _database = "csproject";
-        string _id = "mirim";
-        string _pw = "mirim321!";
+        string _server = BorrowAndReturn._server;
+        int _port = BorrowAndReturn._port;
+        string _database = BorrowAndReturn._database;
+        string _id = BorrowAndReturn._id;
+        string _pw = BorrowAndReturn._pw;
         string _connectionAddress = "";
-
+        public static string select_book_id = "";
 
         public Borrow()
         {
@@ -37,7 +37,7 @@ namespace LibraryProgram
                 {
                     mysql.Open();
                     //accounts_table의 전체 데이터를 조회합니다.            
-                    string selectQuery = string.Format("SELECT title, writer FROM book WHERE title LIKE '%" + searchTB.Text +"%' OR writer LIKE '%" + searchTB.Text + "%'");
+                    string selectQuery = string.Format("SELECT title, writer, publisher, book_id FROM book WHERE title LIKE '%" + searchTB.Text +"%' OR writer LIKE '%" + searchTB.Text + "%'");
 
                     MySqlCommand command = new MySqlCommand(selectQuery, mysql);
                     MySqlDataReader table = command.ExecuteReader();
@@ -49,6 +49,8 @@ namespace LibraryProgram
                         ListViewItem item = new ListViewItem();
                         item.Text = table["title"].ToString();
                         item.SubItems.Add(table["writer"].ToString());
+                        item.SubItems.Add(table["publisher"].ToString());
+                        item.SubItems.Add(table["book_id"].ToString());
 
                         listViewBook.Items.Add(item);
                     }
@@ -70,6 +72,7 @@ namespace LibraryProgram
 
             listViewBook.Columns.Add("책 제목", 100);
             listViewBook.Columns.Add("작가");
+            listViewBook.Columns.Add("출판사");
         }
 
         private void btnSearch_Click(object sender, EventArgs e)
@@ -95,9 +98,9 @@ namespace LibraryProgram
             {
                 ListView.SelectedListViewItemCollection items = listViewBook.SelectedItems;
                 ListViewItem lvitem = items[0];
-                string one = lvitem.SubItems[0].Text;
-                string two = lvitem.SubItems[1].Text;
-                MessageBox.Show(one + ", " + two);
+                select_book_id = lvitem.SubItems[3].Text;
+                Borrow_info borrow_Info = new Borrow_info();
+                borrow_Info.ShowDialog();
             }
         }
     }

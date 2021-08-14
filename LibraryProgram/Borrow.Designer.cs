@@ -29,7 +29,7 @@ namespace LibraryProgram
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.ListViewItem listViewItem1 = new System.Windows.Forms.ListViewItem("");
+            System.Windows.Forms.ListViewItem listViewItem3 = new System.Windows.Forms.ListViewItem("");
             this.searchTB = new System.Windows.Forms.TextBox();
             this.button1 = new System.Windows.Forms.Button();
             this.listViewBook = new System.Windows.Forms.ListView();
@@ -37,6 +37,7 @@ namespace LibraryProgram
             // 
             // searchTB
             // 
+            this.searchTB.ImeMode = System.Windows.Forms.ImeMode.HangulFull;
             this.searchTB.Location = new System.Drawing.Point(12, 12);
             this.searchTB.Name = "searchTB";
             this.searchTB.Size = new System.Drawing.Size(251, 25);
@@ -57,7 +58,7 @@ namespace LibraryProgram
             // 
             this.listViewBook.HideSelection = false;
             this.listViewBook.Items.AddRange(new System.Windows.Forms.ListViewItem[] {
-            listViewItem1});
+            listViewItem3});
             this.listViewBook.Location = new System.Drawing.Point(12, 91);
             this.listViewBook.Name = "listViewBook";
             this.listViewBook.Size = new System.Drawing.Size(612, 306);
