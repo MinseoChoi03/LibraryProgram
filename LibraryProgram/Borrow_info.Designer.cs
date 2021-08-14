@@ -29,7 +29,6 @@ namespace LibraryProgram
         /// </summary>
         private void InitializeComponent()
         {
-            this.label1 = new System.Windows.Forms.Label();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.book_title = new System.Windows.Forms.Label();
             this.writerNpublisher = new System.Windows.Forms.Label();
@@ -37,15 +36,6 @@ namespace LibraryProgram
             this.stock = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(12, 9);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(45, 15);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "label1";
             // 
             // pictureBox1
             // 
@@ -106,7 +96,6 @@ namespace LibraryProgram
             this.Controls.Add(this.writerNpublisher);
             this.Controls.Add(this.book_title);
             this.Controls.Add(this.pictureBox1);
-            this.Controls.Add(this.label1);
             this.Name = "Borrow_info";
             this.Text = "Borrow_info";
             this.Load += new System.EventHandler(this.Borrow_info_Load);
@@ -117,8 +106,6 @@ namespace LibraryProgram
         }
 
         #endregion
-
-        private System.Windows.Forms.Label label1;
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.Label book_title;
         private System.Windows.Forms.Label writerNpublisher;

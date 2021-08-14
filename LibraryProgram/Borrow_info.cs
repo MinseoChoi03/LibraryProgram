@@ -33,8 +33,6 @@ namespace LibraryProgram
 
             info_loading();
 
-            this.label1.Text = "UPDATE book " +
-                            "SET stock=stock+1 WHERE book_id='" + Borrow.select_book_id + "'";
             this.book_title.Text = bookTitle;
             this.writerNpublisher.Text = writer_publisher;
             this.stock.Text = "대출 가능 권수 : " + bookStock + "권";
@@ -95,7 +93,6 @@ namespace LibraryProgram
                         MessageBox.Show("Failed");
                     else
                     {
-                        
                         MessageBox.Show("대출하였습니다");
                         Dispose();
                     }
