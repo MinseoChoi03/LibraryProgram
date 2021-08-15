@@ -38,9 +38,10 @@ namespace LibraryProgram
             //listViewBook.GridLines = true;
             listViewBook.FullRowSelect = true;
 
+            listViewBook.Columns.Add("id", 30);
             listViewBook.Columns.Add("책 제목", 100);
             listViewBook.Columns.Add("작가", 80);
-            listViewBook.Columns.Add("출판사", 100);
+            listViewBook.Columns.Add("출판사", 85);
             listViewBook.Columns.Add("대출일", 120);
             listViewBook.Columns.Add("반납일", 120);
 
@@ -58,9 +59,8 @@ namespace LibraryProgram
             {
                 using (MySqlConnection mysql = new MySqlConnection(_connectionAddress))
                 {
-                    mysql.Open();
-                    //accounts_table의 전체 데이터를 조회합니다.            
-                    string selectQuery = string.Format("SELECT title, writer, publisher, borrow_user " +
+                    mysql.Open();           
+                    string selectQuery = string.Format("SELECT book_id, title, writer, publisher, borrow_user " +
                         "FROM book WHERE borrow_user LIKE '%" + connect_user + "%'");
 
                     MySqlCommand command = new MySqlCommand(selectQuery, mysql);
@@ -71,7 +71,8 @@ namespace LibraryProgram
                     while (table.Read())
                     {
                         ListViewItem item = new ListViewItem();
-                        item.Text = table["title"].ToString();
+                        item.Text = table["book_id"].ToString();
+                        item.SubItems.Add(table["title"].ToString());
                         item.SubItems.Add(table["writer"].ToString());
                         item.SubItems.Add(table["publisher"].ToString());
                         int index = table["borrow_user"].ToString().IndexOf(connect_user);
@@ -94,24 +95,76 @@ namespace LibraryProgram
             }
         }
 
+        private void listViewBook_MouseClick(object sender, MouseEventArgs e)
+        {
+            if (e.Button.Equals(MouseButtons.Right))
+            {
+                string seletedItem = listViewBook.GetItemAt(e.X, e.Y).Text;
+
+                ContextMenu m = new ContextMenu();
+
+                MenuItem returnMenu = new MenuItem();
+                MenuItem extensionMenu = new MenuItem();
+
+                returnMenu.Text = "반납하기";
+                extensionMenu.Text = "대출 연장하기";
+
+                returnMenu.Click += (senders, es) =>
+                {
+                    returning(seletedItem);
+                };
+                extensionMenu.Click += (senders, es) =>
+                {
+                    MessageBox.Show("아직 준비중입니다.");
+                };
+
+                m.MenuItems.Add(returnMenu);
+                m.MenuItems.Add(extensionMenu);
+
+                m.Show(listViewBook, new Point(e.X, e.Y));
+            }
+        }
+
         private void returning(string selectItem)
         {
+            string borrow_user = "";
             try
             {
                 using (MySqlConnection mysql = new MySqlConnection(_connectionAddress))
                 {
                     mysql.Open();
-                    string updateQuery = "";
+                    string selectQuery = "SELECT borrow_user FROM book WHERE book_id='" + selectItem + "'";
 
-                    MySqlCommand command = new MySqlCommand(updateQuery, mysql);
+                    MySqlCommand command = new MySqlCommand(selectQuery, mysql);
                     MySqlDataReader table = command.ExecuteReader();
 
                     while (table.Read())
                     {
-                        
+                        borrow_user = table["borrow_user"].ToString();
                     }
 
                     table.Close();
+
+                    mysql.Close();
+                }
+                using (MySqlConnection mysql = new MySqlConnection(_connectionAddress))
+                {
+                    mysql.Open();
+                    int index = borrow_user.IndexOf(connect_user);
+                    string user_range = borrow_user.Substring(index, 18); //유저 코드부터 슬래시까지의 범위 추출
+                    string delete_user = borrow_user.Replace(user_range, "");
+                    string updateQuery = "UPDATE book SET borrow_user='" + delete_user + "', stock=stock+1 WHERE book_id='" + selectItem + "'";
+
+                    MySqlCommand command = new MySqlCommand(updateQuery, mysql);
+
+                    if (command.ExecuteNonQuery() != 1)
+                        MessageBox.Show("Failed");
+                    else
+                    {
+                        MessageBox.Show("반납하였습니다.");
+                    }
+
+                    mysql.Close();
                 }
             }
             catch (Exception exc)

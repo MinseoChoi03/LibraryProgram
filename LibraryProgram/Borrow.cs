@@ -37,7 +37,7 @@ namespace LibraryProgram
                 {
                     mysql.Open();
                     //accounts_table의 전체 데이터를 조회합니다.            
-                    string selectQuery = string.Format("SELECT title, writer, publisher, book_id FROM book WHERE title LIKE '%" + searchTB.Text +"%' OR writer LIKE '%" + searchTB.Text + "%'");
+                    string selectQuery = string.Format("SELECT book_id, title, writer, publisher FROM book WHERE title LIKE '%" + searchTB.Text +"%' OR writer LIKE '%" + searchTB.Text + "%'");
 
                     MySqlCommand command = new MySqlCommand(selectQuery, mysql);
                     MySqlDataReader table = command.ExecuteReader();
@@ -47,10 +47,10 @@ namespace LibraryProgram
                     while (table.Read())
                     {
                         ListViewItem item = new ListViewItem();
-                        item.Text = table["title"].ToString();
+                        item.Text = table["book_id"].ToString();
+                        item.SubItems.Add(table["title"].ToString());
                         item.SubItems.Add(table["writer"].ToString());
                         item.SubItems.Add(table["publisher"].ToString());
-                        item.SubItems.Add(table["book_id"].ToString());
 
                         listViewBook.Items.Add(item);
                     }
@@ -70,6 +70,7 @@ namespace LibraryProgram
             //listViewBook.GridLines = true;
             listViewBook.FullRowSelect = true;
 
+            listViewBook.Columns.Add("id", 30);
             listViewBook.Columns.Add("책 제목", 100);
             listViewBook.Columns.Add("작가");
             listViewBook.Columns.Add("출판사");
@@ -98,7 +99,7 @@ namespace LibraryProgram
             {
                 ListView.SelectedListViewItemCollection items = listViewBook.SelectedItems;
                 ListViewItem lvitem = items[0];
-                select_book_id = lvitem.SubItems[3].Text;
+                select_book_id = lvitem.SubItems[0].Text;
                 Borrow_info borrow_Info = new Borrow_info();
                 borrow_Info.ShowDialog();
             }

@@ -42,6 +42,7 @@ namespace LibraryProgram
             this.listViewBook.Size = new System.Drawing.Size(612, 273);
             this.listViewBook.TabIndex = 0;
             this.listViewBook.UseCompatibleStateImageBehavior = false;
+            this.listViewBook.MouseClick += new System.Windows.Forms.MouseEventHandler(this.listViewBook_MouseClick);
             // 
             // label1
             // 
